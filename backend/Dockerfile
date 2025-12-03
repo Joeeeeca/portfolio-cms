@@ -17,4 +17,5 @@ COPY pb_hooks ./pb_hooks
 ENV PORT=8080
 EXPOSE 8080
 
-CMD ["./pocketbase", "serve", "--http=0.0.0.0:8080"]
+CMD ["./pocketbase", "serve", "--http=0.0.0.0:8080", "--http-ui"]
+
