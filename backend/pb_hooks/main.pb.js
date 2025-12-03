@@ -1,22 +1,13 @@
 onBeforeServe((e) => {
-    e.router.options("/{path...}", (c) => {
-        return c.json(200, {}, {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Methods": "*",
-        });
-    });
-
     e.router.use((c, next) => {
-    c.header("Access-Control-Allow-Origin", "*")
-    c.header("Access-Control-Allow-Headers", "*")
-    c.header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
+        c.header("Access-Control-Allow-Origin", "*");
+        c.header("Access-Control-Allow-Headers", "*");
+        c.header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
 
-    if (c.request.method == "OPTIONS") {
-        return c.json(200, {})
-    }
+        if (c.req.method === "OPTIONS") {
+            return c.json(200, {});
+        }
 
-    return next()
-})
-
+        return next();
+    });
 });

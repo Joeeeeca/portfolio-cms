@@ -1,23 +1,20 @@
 FROM alpine:latest
 
-# Set working directory
 WORKDIR /app
 
-# Install certificates for HTTPS
 RUN apk add --no-cache ca-certificates
 
-# Copy PocketBase binary
+# Copy PocketBase Linux binary
 COPY pocketbase ./pocketbase
-
-# Make PocketBase executable
 RUN chmod +x ./pocketbase
 
-# Copy data + migrations (optional but recommended)
+# Copy PB data and migrations
 COPY pb_migrations ./pb_migrations
 COPY pb_data ./pb_data
+COPY pb_hooks ./pb_hooks
 
-# Expose PocketBase API port
-EXPOSE 8090
+# Use Railway's dynamic port
+ENV PORT=8080
+EXPOSE 8080
 
-# Start PocketBase
-CMD ["./pocketbase", "serve", "--http=0.0.0.0:8090"]
+CMD ["./pocketbase", "serve", "--http=0.0.0.0:8080"]
