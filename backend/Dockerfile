@@ -4,18 +4,17 @@ WORKDIR /app
 
 RUN apk add --no-cache ca-certificates
 
-# Copy PocketBase Linux binary
+# Copy PB binary
 COPY pocketbase ./pocketbase
 RUN chmod +x ./pocketbase
 
-# Copy PB data and migrations
+# Copy PB data & migrations & hooks
 COPY pb_migrations ./pb_migrations
 COPY pb_data ./pb_data
 COPY pb_hooks ./pb_hooks
 
-# Use Railway's dynamic port
-ENV PORT=8080
-EXPOSE 8080
+# PocketBase default port
+EXPOSE 8090
 
-CMD ["./pocketbase", "serve", "--http=0.0.0.0:8080", "--http-ui"]
-
+# Start PB WITH dashboard UI
+CMD ["./pocketbase", "serve", "--http=0.0.0.0:8090", "--http-ui"]
