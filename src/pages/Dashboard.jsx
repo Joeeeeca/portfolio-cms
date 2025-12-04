@@ -120,7 +120,7 @@ export default function Dashboard() {
             <h2 className="text-xl font-semibold mb-4">Latest Media</h2>
 
             {recentMedia.length === 0 ? (
-              <p className="text-gray-400">No media uploaded yet.</p>
+              <p className="text-gray-400">No media uploaded yet</p>
             ) : (
               <div className="grid grid-cols-2 gap-3">
                 {recentMedia.map((m) => (
