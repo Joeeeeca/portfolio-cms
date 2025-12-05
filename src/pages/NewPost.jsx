@@ -5,11 +5,21 @@ import Layout from "../components/Layout";
 import GlassCard from "../components/GlassCard";
 import RichTextEditor from "../components/RichTextEditor";
 
+// Utility: convert title → slug
+function slugify(str) {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export default function NewPost() {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");   // HTML from editor
+  const [slug, setSlug] = useState("");        // 🔥 new field
+  const [content, setContent] = useState("");  // HTML from editor
   const [tags, setTags] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,11 +28,15 @@ export default function NewPost() {
     e.preventDefault();
     setLoading(true);
 
+    // If slug empty → auto-generate from title
+    const finalSlug = slug.trim() !== "" ? slugify(slug) : slugify(title);
+
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("content", content);  // this is now HTML
+    formData.append("slug", finalSlug);      // 🔥 required for blog URLs
+    formData.append("content", content);     // HTML
     formData.append("tags", tags);
-    formData.append("author", ""); // optional for now
+    formData.append("author", ""); 
 
     if (coverImage) {
       formData.append("coverImage", coverImage);
@@ -56,6 +70,20 @@ export default function NewPost() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
+              />
+            </div>
+
+            {/* Slug */}
+            <div>
+              <label className="block mb-1 font-medium">
+                Slug (URL — optional, auto-generates if blank)
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. seo-basics-for-small-businesses"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 outline-none"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
               />
             </div>
 
